@@ -26,13 +26,30 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+       
+    }
+    
+    
+    //created func to toggle the UI with a single-line function call.
+    func configUI(_ recordingStatus : RecordingStatus)  {
+        switch (recordingStatus) {
+        case .recording:
+            recordbutton.isEnabled = false
+            stopButton.isEnabled = true
+            recordingLabel.text = "Recording in Progress"
+        case .notRecording:
+            stopButton.isEnabled = false
+            recordbutton.isEnabled = true
+            recordingLabel.text = "Tap to Record"
+        }
+    }
+    
+    enum RecordingStatus {
+        case recording, notRecording
     }
     
     @IBAction func recordAudio(_ sender: Any) {
-        recordbutton.isEnabled = false
-        stopButton.isEnabled = true
-        recordingLabel.text = "Recording in Progress"
+        configUI(.recording)
         
         //AVAudioRecorder icin
         //dosya olusturuyoruz
@@ -55,9 +72,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     }
     
     @IBAction func stopRecording(_ sender: Any) {
-        stopButton.isEnabled = false
-        recordbutton.isEnabled = true
-        recordingLabel.text = "Tap to Record"
+        configUI(.notRecording)
         
         //to stop the audio
         audioRecorder.stop()
